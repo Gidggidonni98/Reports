@@ -1,5 +1,6 @@
 importScripts('//cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js');
 importScripts('/assets/js/utils/bd-utils.js');
+importScripts('/assets/js/utils/sw-utils.js');
 
 const STATIC_CACHE = 'staticv1';
 const DYNAMIC_CACHE = 'dynamicv1';
