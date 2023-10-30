@@ -5,7 +5,7 @@ const incidencesDB = new PouchDB('incidences');
 const saveIncidence = (incidence) => {
     incidence._id = new Date().toISOString();
     return incidencesDB.put(incidence).then((result) => {
-        self.registration.sync.register('incidence-post');
+        self.registration.sync.register('incidence-status-post');
         const response = {
             registered: true,
             offline: true,
@@ -25,9 +25,16 @@ const saveIncidenceToApi = () => {
             for (const row of rows) {
                 const {doc} = row;
                 try {
-                    const response = await axiosClient.post('/incidences/save', doc);
-                    if (response['registered']) {
-                        incidences.push(response);
+                    const response = await fetch('http:/206.189.234.55/api/incidences/status', {
+                        method: 'POST',
+                        body: JSON.stringify(doc),
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const data = await response.json();
+                    if (data['changed']) {
+                        incidences.push(data);
                     }
                 } catch (error) {
                     console.log(error);
@@ -35,6 +42,6 @@ const saveIncidenceToApi = () => {
                     return incidencesDB.remove(doc);
                 }
             }
-            return Promise.all(incidences);
+            return Promise.all([...incidences, getAllIncidencesPending()]);
     });
 }

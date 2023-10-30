@@ -4,10 +4,26 @@
  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
  * Author: BootstrapMade.com
  * License: https://bootstrapmade.com/license/
- */
+*/
+
+let swReg;
+
 if(navigator.serviceWorker){
-  navigator.serviceWorker.register('/sw.js');
-}
+  navigator.serviceWorker.register('/sw.js').then((swReg) => {
+    swReg = swRegRes;
+    swReg.pushManager.getSubscription().then(verifyNotifications);
+  });
+};
+
+const verifyNotifications = (activated) => {
+  if(activated){
+   $('#notifyActivated').css('display', 'block');
+   $('#notifyActivated').css('display', 'none');
+  }else{
+    $('#notifyActivated').css('display', 'none');
+    $('#notifyActivated').css('display', 'block');
+  }
+};
 
 var fullname = ``;
 var role = ``;

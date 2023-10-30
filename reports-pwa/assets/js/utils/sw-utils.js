@@ -1,5 +1,5 @@
 const updateDynamicCache = (dynamicCache, req, res) => {
-  if (res.status === 200) {
+  if (res.ok) {
     return caches.open(dynamicCache).then((cache) => {
       cache.put(req, res.clone());
       return res.clone();
@@ -16,7 +16,7 @@ const updateStaticCache = async (staticCache, req, APP_SHELL_INMUTABLE) => {
     let response = null;
 
     try {
-      response = await axiosClient.get(req.url);
+      response = await fetch(req);
     } catch (error) {
       console.log(error);
     }
@@ -27,13 +27,13 @@ const updateStaticCache = async (staticCache, req, APP_SHELL_INMUTABLE) => {
 const apiSaveIncidence = (cacheName, req) => {
   if (
     req.url.indexOf(
-      "/api/notification" >= 0 || req.url.indexOf("/api/notification/subscribe")
+      "/api/notification" >= 0 || req.url.indexOf("/api/notification/subscribe") >= 0
     )
   ) {
-    return axiosClient(req.url);
+    return fetch(req);
   }
   if (req.clone().method === "POST") {
-    if (self.registration.sync) {
+    if (self.registration.sync && !navigator.onLine) {
       return req
         .clone()
         .text()
@@ -42,10 +42,10 @@ const apiSaveIncidence = (cacheName, req) => {
         
         });
     }
-    return axiosClient.get(req.url);
+    return fetch(req);
   }else{
-    return axiosClient.get(req.url).then((response) => {
-      if(response.status === 200){
+    return fetch(req).then((response) => {
+      if(response.ok){
         updateDynamicCache(cacheName, req, response);
       }else{
         return caches.match(req);

@@ -66,11 +66,44 @@ self.addEventListener('activate', e => {
                         return caches.delete(key);
                     }
                 });
+                keys.forEach(key => {
+                    if (key !== DYNAMIC_CACHE && key.includes('static')) {
+                        return caches.delete(key);
+                    }
+                });
         });
     e.waitUntil(clearCache);
 });
 
 self.addEventListener('fetch', e => {
    //Verificar el POST     'api/user' -> POST
+   let source;
+   if (e.request.url.includes('/api/')) {
+        //Cache | Network with Cache Fallback
+        source = apiSaveIncidence(DYNAMIC_CACHE, e.request);
+    
+   } else {
+    //Cache with Network Fallback
+    source = caches.match(e.request).then(cacheRes => {
+            if (cacheRes) {
+                updateStaticCache(STATIC_CACHE, e.request, APP_SHELL_INMUTABLE);
+                return cacheRes;
+            } else {
+                return fetch(e.request).then(res => {
+                        return updateDynamicCache(DYNAMIC_CACHE, e.request, res);
+                    }); 
+            }
+        });
+   }
+
+   e.respondWith(source);
 
 });
+
+self.addEventListener('sync', e => {
+    if (e.tag === 'incidence-status-post') {
+
+        e.waitUntil(saveIncidenceToApi());
+    }
+});
+    
