@@ -27,8 +27,12 @@ const updateStaticCache = async (staticCache, req, APP_SHELL_INMUTABLE) => {
 const apiSaveIncidence = (cacheName, req) => {
   if (
     req.url.indexOf(
+<<<<<<< HEAD
       "/api/notification" >= 0 || 
       req.url.indexOf("/api/notification/subscribe") >= 0
+=======
+      "/api/notification" >= 0 || req.url.indexOf("/api/notification/subscribe") >= 0
+>>>>>>> 1eb9d6c89f374cffe5ac0cff3620b8c8caeb2b0f
     )
   ) {
     return fetch(req);
@@ -48,7 +52,11 @@ const apiSaveIncidence = (cacheName, req) => {
   }else{
     return fetch(req).then((response) => {
       if(response.ok){
+<<<<<<< HEAD
         updateDynamicCache(cacheName, req, response.clone());
+=======
+        updateDynamicCache(cacheName, req, response);
+>>>>>>> 1eb9d6c89f374cffe5ac0cff3620b8c8caeb2b0f
       }else{
         return caches.match(req);
       }

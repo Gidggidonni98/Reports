@@ -25,17 +25,27 @@ const saveIncidenceToApi = () => {
             for (const row of rows) {
                 const {doc} = row;
                 try {
+<<<<<<< HEAD
                     const response = await fetch('http://206.189.234.55/api/incidences/status', {
+=======
+                    const response = await fetch('http:/206.189.234.55/api/incidences/status', {
+>>>>>>> 1eb9d6c89f374cffe5ac0cff3620b8c8caeb2b0f
                         method: 'POST',
                         body: JSON.stringify(doc),
                         headers: {
                             'Content-Type': 'application/json',
+<<<<<<< HEAD
                             'Accept': 'application/json',
                         },
                     });
 
                     const data = await response.json();
 
+=======
+                        },
+                    });
+                    const data = await response.json();
+>>>>>>> 1eb9d6c89f374cffe5ac0cff3620b8c8caeb2b0f
                     if (data['changed']) {
                         incidences.push(data);
                     }
