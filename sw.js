@@ -1,4 +1,4 @@
-importScripts("//cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js");
+importScripts("https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js");
 importScripts("/assets/js/utils/bd-utils.js");
 importScripts("/assets/js/utils/sw-utils.js");
 
@@ -6,6 +6,7 @@ const STATIC_CACHE = "staticv1";
 const DYNAMIC_CACHE = "dynamicv1";
 const INMUTABLE_CACHE = "inmutablev1";
 const APP_SHELL = [
+  "/",
   "/index.html",
   "/assets/css/main.css",
   "/assets/css/style.css",
@@ -19,12 +20,6 @@ const APP_SHELL = [
   "/assets/js/signin.js",
   "/assets/js/axios/axios-intance.js",
   "/assets/js/toast/toast.js",
-  "/pages/auth/register.html",
-  "/pages/admin/home.html",
-  "/pages/admin/users.html",
-  "/pages/attendant/home.html",
-  "/pages/docent/home.html",
-  "/pages/docent/incidences.html",
 ];
 
 const APP_SHELL_INMUTABLE = [
@@ -39,6 +34,7 @@ const APP_SHELL_INMUTABLE = [
   "/assets/vendor/boxicons/fonts/boxicons.woff2",
   "/assets/vendor/boxicons/fonts/boxicons.eot",
   "/assets/vendor/boxicons/fonts/boxicons.svg",
+  "/assets/vendor/simple-tables/simple-table.js",
 ];
 
 const clear = (cacheName, items = 50) => {
